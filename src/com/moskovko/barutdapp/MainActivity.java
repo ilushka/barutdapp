@@ -10,6 +10,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.view.ViewGroup.LayoutParams;
 import android.view.View;
 import android.view.Gravity;
+import android.support.v4.widget.DrawerLayout.DrawerListener;
 
 public class MainActivity extends ActionBarActivity
 {
@@ -39,16 +40,18 @@ public class MainActivity extends ActionBarActivity
         DrawerLayout.LayoutParams dlp = new DrawerLayout.LayoutParams(
             600, LayoutParams.MATCH_PARENT);
         dlp.gravity = Gravity.START;
+
         View v = new View(this);
         v.setLayoutParams(dlp);
         v.setBackgroundColor(0xFFFF0000);
 
         DrawerLayout dl = new DrawerLayout(this);
+        dl.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED, Gravity.START);
         dl.setLayoutParams(new LayoutParams(
             LayoutParams.FILL_PARENT,
             LayoutParams.FILL_PARENT));
-        dl.addView(v);
         dl.addView(iv);
+        dl.addView(v);
 
         setContentView(dl);
 
