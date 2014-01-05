@@ -13,7 +13,9 @@ import android.view.ViewGroup.LayoutParams;
 import android.view.Window;
 import android.widget.AbsoluteLayout;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.RelativeLayout;
+import android.widget.ArrayAdapter;
 
 public class MainActivity extends ActionBarActivity
 {
@@ -40,11 +42,14 @@ public class MainActivity extends ActionBarActivity
         al.addView(iv);
         this.mMainView = iv;
 
-        View v = new View(this);
-        v.setLayoutParams(new DrawerLayout.LayoutParams(
+        String[] menu = { "Schedule", "Roster", "Standings" };
+        ListView lv = new ListView(this);
+        lv.setBackgroundColor(0xFFFF0000);
+        lv.setLayoutParams(new DrawerLayout.LayoutParams(
             600, LayoutParams.MATCH_PARENT, Gravity.START));
-        v.setBackgroundColor(0xFFFF0000);
-        this.mDrawerView = v;
+        lv.setAdapter(new ArrayAdapter<String>(this,
+            android.R.layout.simple_list_item_1, menu)); 
+        this.mDrawerView = lv;
 
         DrawerLayout dl = new DrawerLayout(this);
         dl.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED, Gravity.START);
@@ -71,7 +76,7 @@ public class MainActivity extends ActionBarActivity
             }
         });
         dl.addView(al);
-        dl.addView(v);
+        dl.addView(lv);
 
         setContentView(dl);
 
