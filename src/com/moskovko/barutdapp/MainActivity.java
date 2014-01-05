@@ -16,13 +16,15 @@ import android.widget.ListView;
 import android.widget.ArrayAdapter;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.widget.AdapterView;
 
 public class MainActivity extends ActionBarActivity {
     private static final String TAG = "MainActivity";
     private static boolean DEBUG = true;
+    private static int DRAWER_WIDTH = 600;
 
     private View mMainView;
-    private View mDrawerView;
+    private DrawerLayout mDrawerView;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -42,17 +44,25 @@ public class MainActivity extends ActionBarActivity {
         ListView lv = new ListView(this);
         lv.setBackgroundColor(0xFFFF0000);
         lv.setLayoutParams(new DrawerLayout.LayoutParams(
-            600, LayoutParams.MATCH_PARENT, Gravity.START));
+            DRAWER_WIDTH, LayoutParams.MATCH_PARENT, Gravity.START));
         lv.setAdapter(new ArrayAdapter<String>(this,
             android.R.layout.simple_list_item_1, menu)); 
-        this.mDrawerView = lv;
+        lv.setOnItemClickListener(new ListView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView parent,
+                View view, int position, long id)
+            {
+                MainActivity.this.mDrawerView.closeDrawer(Gravity.START);
+                showRosterFragment();
+            }
+        });
 
-        DrawerLayout dl = new DrawerLayout(this);
-        dl.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED, Gravity.START);
-        dl.setLayoutParams(new LayoutParams(
+        this.mDrawerView = new DrawerLayout(this);
+        this.mDrawerView.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED, Gravity.START);
+        this.mDrawerView.setLayoutParams(new LayoutParams(
             LayoutParams.FILL_PARENT,
             LayoutParams.FILL_PARENT));
-        dl.setDrawerListener(new DrawerListener() {
+        this.mDrawerView.setDrawerListener(new DrawerListener() {
             @Override
             public void onDrawerClosed(View drawerView) {
             }
@@ -71,20 +81,16 @@ public class MainActivity extends ActionBarActivity {
             public void onDrawerStateChanged(int newState) {
             }
         });
-        dl.addView(al);
-        dl.addView(lv);
+        this.mDrawerView.addView(al);
+        this.mDrawerView.addView(lv);
 
-        setContentView(dl);
-
-        /*
-         *setContentView(R.layout.main);
-         */
+        setContentView(this.mDrawerView);
 
         showScheduleFragment();
     }
 
     private void slideMainView(float offset) {
-        int width = mDrawerView.getLayoutParams().width;
+        int width = DRAWER_WIDTH;
         float delta = (width * offset);
 
         if (DEBUG) Log.d(TAG, "slideMainView: width: " + width + " delta: " + delta);
@@ -100,6 +106,14 @@ public class MainActivity extends ActionBarActivity {
         FragmentTransaction ft = fm.beginTransaction();
         ScheduleFragment sf = new ScheduleFragment();
         ft.add(666, sf);
+        ft.commit();
+    }
+
+    private void showRosterFragment() {
+        FragmentManager fm = getFragmentManager();
+        FragmentTransaction ft = fm.beginTransaction();
+        RosterFragment rf = new RosterFragment();
+        ft.replace(666, rf);
         ft.commit();
     }
 }
