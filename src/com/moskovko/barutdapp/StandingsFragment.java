@@ -10,8 +10,8 @@ import android.widget.LinearLayout;
 import android.view.LayoutInflater;
 import android.widget.ScrollView;
 
-public class RosterFragment extends Fragment {
-    private static final String TAG = "RosterFragment";
+public class StandingsFragment extends Fragment {
+    private static final String TAG = "StandingsFragment";
     private static boolean DEBUG = true;
 
     @Override
@@ -42,7 +42,7 @@ public class RosterFragment extends Fragment {
                     LayoutParams.MATCH_PARENT, 200);
             lp.setMargins(10, 10, 10, 10);
             v.setLayoutParams(lp);
-            v.setBackgroundColor(0xFF00FFFF);
+            v.setBackgroundColor(0xFFFFFF00);
             layout.addView(v);
         }
     }
