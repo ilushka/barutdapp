@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="main_background">    #FF660000</color>
+    <color name="box_background">     #FF7F0000</color>
+    <color name="snapshot_team_name"> #FFFFFFFF</color>
+    <color name="snapshot_vs">        #FFFFFFFF</color>
+</resources>
