@@ -22,47 +22,50 @@ public class MainActivity extends ActionBarActivity {
     private static final String TAG = "MainActivity";
     private static boolean DEBUG = true;
     private static int DRAWER_WIDTH = 600;
+    private static int FRAGMENT_CONTAINER_ID = 666;
 
-    private View mMainView;
-    private DrawerLayout mDrawerView;
+    private View mFragmentContainer;
+    private DrawerLayout mDrawerLayout;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //requestWindowFeature(Window.FEATURE_NO_TITLE);
 
-        this.mMainView = new AbsoluteLayout(this);
-        this.mMainView.setLayoutParams(new AbsoluteLayout.LayoutParams(
+        this.mFragmentContainer = new AbsoluteLayout(this);
+        this.mFragmentContainer.setLayoutParams(new AbsoluteLayout.LayoutParams(
             LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT, 0, 0));
-        this.mMainView.setId(666);
-        AbsoluteLayout al = new AbsoluteLayout(this);
-        al.setLayoutParams(new DrawerLayout.LayoutParams(
+        this.mFragmentContainer.setId(FRAGMENT_CONTAINER_ID);
+
+        AbsoluteLayout container = new AbsoluteLayout(this);
+        container.setLayoutParams(new DrawerLayout.LayoutParams(
             LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
-        al.addView(this.mMainView);
+        container.setBackgroundResource(R.color.main_background);
+        container.addView(this.mFragmentContainer);
 
         String[] menu = { "Schedule", "Roster", "Standings" };
-        ListView lv = new ListView(this);
-        lv.setBackgroundColor(0xFFFF0000);
-        lv.setLayoutParams(new DrawerLayout.LayoutParams(
+        ListView drawerListView = new ListView(this);
+        drawerListView.setBackgroundResource(R.color.drawer_background);
+        drawerListView.setLayoutParams(new DrawerLayout.LayoutParams(
             DRAWER_WIDTH, LayoutParams.MATCH_PARENT, Gravity.START));
-        lv.setAdapter(new ArrayAdapter<String>(this,
+        drawerListView.setAdapter(new ArrayAdapter<String>(this,
             android.R.layout.simple_list_item_1, menu)); 
-        lv.setOnItemClickListener(new ListView.OnItemClickListener() {
+        drawerListView.setOnItemClickListener(new ListView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView parent,
                 View view, int position, long id)
             {
-                MainActivity.this.mDrawerView.closeDrawer(Gravity.START);
+                MainActivity.this.mDrawerLayout.closeDrawer(Gravity.START);
                 showRosterFragment();
             }
         });
 
-        this.mDrawerView = new DrawerLayout(this);
-        this.mDrawerView.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED, Gravity.START);
-        this.mDrawerView.setLayoutParams(new LayoutParams(
+        this.mDrawerLayout = new DrawerLayout(this);
+        this.mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED, Gravity.START);
+        this.mDrawerLayout.setLayoutParams(new LayoutParams(
             LayoutParams.FILL_PARENT,
             LayoutParams.FILL_PARENT));
-        this.mDrawerView.setDrawerListener(new DrawerListener() {
+        this.mDrawerLayout.setDrawerListener(new DrawerListener() {
             @Override
             public void onDrawerClosed(View drawerView) {
             }
@@ -74,38 +77,38 @@ public class MainActivity extends ActionBarActivity {
             @Override
             public void onDrawerSlide(View drawerView, float slideOffset) {
                 if (DEBUG) Log.d(TAG, "onDrawerSlide: slideOffset: " + slideOffset);
-                slideMainView(slideOffset);
+                slideFragmentContainer(slideOffset);
             }
 
             @Override
             public void onDrawerStateChanged(int newState) {
             }
         });
-        this.mDrawerView.addView(al);
-        this.mDrawerView.addView(lv);
+        this.mDrawerLayout.addView(container);
+        this.mDrawerLayout.addView(drawerListView);
 
-        setContentView(this.mDrawerView);
+        setContentView(this.mDrawerLayout);
 
         showScheduleFragment();
     }
 
-    private void slideMainView(float offset) {
+    private void slideFragmentContainer(float offset) {
         int width = DRAWER_WIDTH;
         float delta = (width * offset);
 
-        if (DEBUG) Log.d(TAG, "slideMainView: width: " + width + " delta: " + delta);
+        if (DEBUG) Log.d(TAG, "slideFragmentContainer: width: " + width + " delta: " + delta);
 
-        AbsoluteLayout.LayoutParams lp = (AbsoluteLayout.LayoutParams)mMainView
+        AbsoluteLayout.LayoutParams lp = (AbsoluteLayout.LayoutParams)mFragmentContainer
             .getLayoutParams();
         lp.x = (int)delta;
-        mMainView.setLayoutParams(lp);
+        mFragmentContainer.setLayoutParams(lp);
     }
 
     private void showScheduleFragment() {
         FragmentManager fm = getFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
         ScheduleFragment sf = new ScheduleFragment();
-        ft.add(666, sf);
+        ft.add(FRAGMENT_CONTAINER_ID, sf);
         ft.commit();
     }
 
@@ -113,7 +116,7 @@ public class MainActivity extends ActionBarActivity {
         FragmentManager fm = getFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
         RosterFragment rf = new RosterFragment();
-        ft.replace(666, rf);
+        ft.replace(FRAGMENT_CONTAINER_ID, rf);
         ft.commit();
     }
 }
