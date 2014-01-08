@@ -44,7 +44,6 @@ public class ScheduleFragment extends Fragment {
                     LayoutParams.WRAP_CONTENT);
             lp.setMargins(20, 20, 20, 0);
             v.setLayoutParams(lp);
-            v.setBackgroundResource(R.color.box_background);
             layout.addView(v);
         }
     }
