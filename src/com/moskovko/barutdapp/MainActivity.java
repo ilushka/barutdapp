@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup.LayoutParams;
+import android.view.ViewGroup;
 //import android.view.Window;
 import android.widget.AbsoluteLayout;
 import android.widget.ImageView;
@@ -17,6 +18,9 @@ import android.widget.ArrayAdapter;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.widget.AdapterView;
+import android.widget.TextView;
+import android.content.Context;
+import android.graphics.drawable.ColorDrawable;
 
 public class MainActivity extends ActionBarActivity {
     private static final String TAG = "MainActivity";
@@ -26,6 +30,19 @@ public class MainActivity extends ActionBarActivity {
 
     private View mFragmentContainer;
     private DrawerLayout mDrawerLayout;
+
+    private class DrawerArrayAdapter extends ArrayAdapter {
+        public DrawerArrayAdapter(Context context, int resource, String[] objects) {
+            super(context, resource, objects);
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            TextView v = (TextView)super.getView(position, convertView, parent);
+            v.setTextColor(getResources().getColor(R.color.drawer_text));
+            return v;
+        }
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -48,8 +65,11 @@ public class MainActivity extends ActionBarActivity {
         drawerListView.setBackgroundResource(R.color.drawer_background);
         drawerListView.setLayoutParams(new DrawerLayout.LayoutParams(
             DRAWER_WIDTH, LayoutParams.MATCH_PARENT, Gravity.START));
-        drawerListView.setAdapter(new ArrayAdapter<String>(this,
+        drawerListView.setAdapter(new DrawerArrayAdapter(this,
             android.R.layout.simple_list_item_1, menu)); 
+        drawerListView.setDivider(new ColorDrawable(getResources()
+            .getColor(R.color.drawer_divider)));
+        drawerListView.setDividerHeight(3);
         drawerListView.setOnItemClickListener(new ListView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView parent,
