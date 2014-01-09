@@ -27,6 +27,7 @@ public class MainActivity extends ActionBarActivity {
     private static boolean DEBUG = true;
     private static int DRAWER_WIDTH = 600;
     private static int FRAGMENT_CONTAINER_ID = 666;
+    private static int DRAWER_DIVIDER_HEIGHT = 3;
 
     private View mFragmentContainer;
     private DrawerLayout mDrawerLayout;
@@ -69,7 +70,7 @@ public class MainActivity extends ActionBarActivity {
             android.R.layout.simple_list_item_1, menu)); 
         drawerListView.setDivider(new ColorDrawable(getResources()
             .getColor(R.color.drawer_divider)));
-        drawerListView.setDividerHeight(3);
+        drawerListView.setDividerHeight(DRAWER_DIVIDER_HEIGHT);
         drawerListView.setOnItemClickListener(new ListView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView parent,
