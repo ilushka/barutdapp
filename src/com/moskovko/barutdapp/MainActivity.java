@@ -77,7 +77,7 @@ public class MainActivity extends ActionBarActivity {
                 View view, int position, long id)
             {
                 MainActivity.this.mDrawerLayout.closeDrawer(Gravity.START);
-                showRosterFragment();
+                showGameStatsFragment();
             }
         });
 
@@ -133,11 +133,11 @@ public class MainActivity extends ActionBarActivity {
         ft.commit();
     }
 
-    private void showRosterFragment() {
+    private void showGameStatsFragment() {
         FragmentManager fm = getFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
-        RosterFragment rf = new RosterFragment();
-        ft.replace(FRAGMENT_CONTAINER_ID, rf);
+        GameStatsFragment gsf = new GameStatsFragment();
+        ft.replace(FRAGMENT_CONTAINER_ID, gsf);
         ft.commit();
     }
 }
