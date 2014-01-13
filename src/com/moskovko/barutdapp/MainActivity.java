@@ -22,15 +22,23 @@ import android.widget.TextView;
 import android.content.Context;
 import android.graphics.drawable.ColorDrawable;
 import android.app.Fragment;
+import java.util.HashMap;
+import java.util.Map;
+import java.lang.Runnable;
 
 public class MainActivity extends ActionBarActivity {
     private static final String TAG = "MainActivity";
+
+    private static final String MENU_SCHEDULE = "Schedule";
+    private static final String MENU_ROSTER = "Roster";
+    private static final String MENU_GAMESTATS = "Game Stats";
 
     private static boolean DEBUG = true;
     private static int DRAWER_WIDTH = 600;
     private static int FRAGMENT_CONTAINER_ID = 666;
     private static int DRAWER_DIVIDER_HEIGHT = 3;
-
+    private HashMap<String, Runnable> menuItems;
+    
     private View mFragmentContainer;
     private DrawerLayout mDrawerLayout;
 
@@ -52,6 +60,8 @@ public class MainActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         //requestWindowFeature(Window.FEATURE_NO_TITLE);
 
+        initMenuItems();
+
         this.mFragmentContainer = new AbsoluteLayout(this);
         this.mFragmentContainer.setLayoutParams(new AbsoluteLayout.LayoutParams(
             LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT, 0, 0));
@@ -63,13 +73,13 @@ public class MainActivity extends ActionBarActivity {
         container.setBackgroundResource(R.color.main_background);
         container.addView(this.mFragmentContainer);
 
-        String[] menu = { "Schedule", "Roster", "Standings" };
         ListView drawerListView = new ListView(this);
         drawerListView.setBackgroundResource(R.color.drawer_background);
         drawerListView.setLayoutParams(new DrawerLayout.LayoutParams(
             DRAWER_WIDTH, LayoutParams.MATCH_PARENT, Gravity.START));
         drawerListView.setAdapter(new DrawerArrayAdapter(this,
-            android.R.layout.simple_list_item_1, menu)); 
+            android.R.layout.simple_list_item_1,
+            menuItems.keySet().toArray(new String[0]))); 
         drawerListView.setDivider(new ColorDrawable(getResources()
             .getColor(R.color.drawer_divider)));
         drawerListView.setDividerHeight(DRAWER_DIVIDER_HEIGHT);
@@ -79,7 +89,8 @@ public class MainActivity extends ActionBarActivity {
                 View view, int position, long id)
             {
                 MainActivity.this.mDrawerLayout.closeDrawer(Gravity.START);
-                showGameStatsFragment();
+                String t = ((TextView)view).getText().toString();
+                ((Runnable)menuItems.get(t)).run();
             }
         });
 
@@ -148,5 +159,27 @@ public class MainActivity extends ActionBarActivity {
         GameStatsFragment gsf = new GameStatsFragment();
         ft.replace(FRAGMENT_CONTAINER_ID, gsf);
         ft.commit();
+    }
+
+    private void initMenuItems() {
+        menuItems = new HashMap<String, Runnable>();
+        menuItems.put(MENU_SCHEDULE, new Runnable() {
+            @Override
+            public void run() {
+                showScheduleFragment();
+            }
+        });
+        menuItems.put(MENU_ROSTER, new Runnable() {
+            @Override
+            public void run() {
+                Log.d(TAG, "MONKEY: ROSTER");
+            }
+        });
+        menuItems.put(MENU_GAMESTATS, new Runnable() {
+            @Override
+            public void run() {
+                showGameStatsFragment();
+            }
+        });
     }
 }
