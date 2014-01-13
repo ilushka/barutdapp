@@ -21,9 +21,11 @@ import android.widget.AdapterView;
 import android.widget.TextView;
 import android.content.Context;
 import android.graphics.drawable.ColorDrawable;
+import android.app.Fragment;
 
 public class MainActivity extends ActionBarActivity {
     private static final String TAG = "MainActivity";
+
     private static boolean DEBUG = true;
     private static int DRAWER_WIDTH = 600;
     private static int FRAGMENT_CONTAINER_ID = 666;
@@ -110,7 +112,7 @@ public class MainActivity extends ActionBarActivity {
 
         setContentView(this.mDrawerLayout);
 
-        showScheduleFragment();
+        showFirstFragment(new ScheduleFragment());
     }
 
     private void slideFragmentContainer(float offset) {
@@ -125,11 +127,18 @@ public class MainActivity extends ActionBarActivity {
         mFragmentContainer.setLayoutParams(lp);
     }
 
+    private void showFirstFragment(Fragment fragment) {
+        FragmentManager fm = getFragmentManager();
+        FragmentTransaction ft = fm.beginTransaction();
+        ft.add(FRAGMENT_CONTAINER_ID, fragment);
+        ft.commit();
+    }
+
     private void showScheduleFragment() {
         FragmentManager fm = getFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
         ScheduleFragment sf = new ScheduleFragment();
-        ft.add(FRAGMENT_CONTAINER_ID, sf);
+        ft.replace(FRAGMENT_CONTAINER_ID, sf);
         ft.commit();
     }
 
