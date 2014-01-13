@@ -4,7 +4,7 @@
     <color name="box_background">       #FF7F0000</color>
     <color name="snapshot_team_name">   #FFFFFFFF</color>
     <color name="snapshot_date">        #FFFFFFFF</color>
-    <color name="snapshot_score">       #FFFFFFFF</color>
+    <color name="snapshot_score">       #FFFFFF00</color>
     <color name="drawer_background">    #FF333333</color>
     <color name="drawer_divider">       #FF222222</color>
     <color name="drawer_text">          #FFFFFFFF</color>
