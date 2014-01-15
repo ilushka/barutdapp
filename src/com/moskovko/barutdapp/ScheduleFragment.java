@@ -31,6 +31,7 @@ public class ScheduleFragment extends BoxListFragment {
                 protected void onReceiveResult(int resultCode, Bundle resultData) {
                     String response = resultData.getString(GetGamesRequest.REQUEST_RESPONSE);
                     Log.d(TAG, "MONKEY: onReceiveResult: " + response);
+                    new GameParser(response).parse();
                 }
             }).execute(new URL("http://www.brrtr.com/schedule.xml"));
         } catch (MalformedURLException e) {

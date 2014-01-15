@@ -13,7 +13,7 @@ import android.os.ResultReceiver;
 import android.os.Bundle;
 
 public class GetGamesRequest extends AsyncTask<URL, Integer, Void> {
-    static private final String TAG = "ScheduleRequest";
+    static private final String TAG = "GetGamesRequest";
 
     static public final String REQUEST_RESPONSE = "RequestResponse";
 
