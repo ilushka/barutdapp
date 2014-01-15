@@ -15,11 +15,9 @@ public class GameParser {
     private String mXML;
 
     public class Game {
-        public String name;
+        public String homeTeamName;
+        public String awayTeamName;
         public Date date;
-        public Game(String name, String date) {
-            this.name = name;
-        }
     }
 
     public GameParser(String xml) {
@@ -28,24 +26,40 @@ public class GameParser {
 
     public Game[] parse() {
         try {
-            ArrayList games = null;
+            ArrayList<Game> games = null;
+            Game game = null;
             XmlPullParser xpp = Xml.newPullParser();
             xpp.setInput(new StringReader(mXML));
             int eventType = xpp.getEventType();
             while (eventType != XmlPullParser.END_DOCUMENT) {
                 switch (eventType) {
                 case XmlPullParser.START_DOCUMENT:
-                    games = new ArrayList();
+                    games = new ArrayList<Game>();
                     break;
                 case XmlPullParser.START_TAG:
-                    Log.d(TAG, "MONKEY: START_TAG: " + xpp.getName());
-                    if (xpp.getName().equals("played-at")) {
-                        Log.d(TAG, "MONKEY: TEXT: " + xpp.nextText());
+                    if (xpp.getName().equals("game")) {
+                        game = new Game();
+                    } else if (xpp.getName().equals("homeTeamName")) {
+                        if (game != null) {
+                            game.homeTeamName = xpp.nextText();
+                        }
+                    } else if (xpp.getName().equals("awayTeamName")) {
+                        if (game != null) {
+                            game.awayTeamName = xpp.nextText();
+                        }
+                    }
+                    break;
+                case XmlPullParser.END_TAG:
+                    if (xpp.getName().equals("game")) {
+                        if (game != null) {
+                            games.add(game);
+                        }
                     }
                     break;
                 }
                 eventType = xpp.next();
             }
+            return games.toArray(new Game[0]);
         } catch (XmlPullParserException e) {
             e.printStackTrace();
         } catch (IOException e) {

@@ -13,9 +13,12 @@ import java.net.URL;
 import java.net.MalformedURLException;
 import android.os.ResultReceiver;
 import android.os.Handler;
+import java.util.Date;
 
 public class ScheduleFragment extends BoxListFragment {
     static private final String TAG = "ScheduleFragment";
+
+    private GameParser.Game[] mGames;
 
     public ScheduleFragment() {
         super();
@@ -30,8 +33,14 @@ public class ScheduleFragment extends BoxListFragment {
                 @Override
                 protected void onReceiveResult(int resultCode, Bundle resultData) {
                     String response = resultData.getString(GetGamesRequest.REQUEST_RESPONSE);
-                    Log.d(TAG, "MONKEY: onReceiveResult: " + response);
-                    new GameParser(response).parse();
+                    Log.d(TAG, "onReceiveResult: response: " + response);
+                    mGames = new GameParser(response).parse();
+/* MONKEY:
+                    for (GameParser.Game g : games) {
+                        Log.d(TAG, "MONKEY: game: home: " + g.homeTeamName + " away: " + g.awayTeamName);
+                    }
+*/
+                    ScheduleFragment.this.populateFragment();
                 }
             }).execute(new URL("http://www.brrtr.com/schedule.xml"));
         } catch (MalformedURLException e) {
@@ -41,7 +50,13 @@ public class ScheduleFragment extends BoxListFragment {
 
     @Override
     public View getViewForBox(int index) {
-        return new GameSnapshotView(getActivity());
+        if (index < mGames.length) {
+            return new GameSnapshotView(getActivity(),
+                mGames[index].homeTeamName,
+                mGames[index].awayTeamName,
+                new Date());
+        }
+        return null;
     }
 }
 

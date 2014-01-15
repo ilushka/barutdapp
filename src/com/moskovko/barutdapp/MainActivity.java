@@ -62,17 +62,20 @@ public class MainActivity extends ActionBarActivity {
 
         initMenuItems();
 
+        // Container for each "section", which slides along with drawer:
         this.mFragmentContainer = new AbsoluteLayout(this);
         this.mFragmentContainer.setLayoutParams(new AbsoluteLayout.LayoutParams(
             LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT, 0, 0));
         this.mFragmentContainer.setId(FRAGMENT_CONTAINER_ID);
 
+        // Container for the mFragmentContainer:
         AbsoluteLayout container = new AbsoluteLayout(this);
         container.setLayoutParams(new DrawerLayout.LayoutParams(
             LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
         container.setBackgroundResource(R.color.main_background);
         container.addView(this.mFragmentContainer);
 
+        // Drawer view:
         ListView drawerListView = new ListView(this);
         drawerListView.setBackgroundResource(R.color.drawer_background);
         drawerListView.setLayoutParams(new DrawerLayout.LayoutParams(
@@ -94,6 +97,7 @@ public class MainActivity extends ActionBarActivity {
             }
         });
 
+        // The main layout:
         this.mDrawerLayout = new DrawerLayout(this);
         this.mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED, Gravity.START);
         this.mDrawerLayout.setLayoutParams(new LayoutParams(
