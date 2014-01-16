@@ -54,7 +54,7 @@ public class ScheduleFragment extends BoxListFragment {
             return new GameSnapshotView(getActivity(),
                 mGames[index].homeTeamName,
                 mGames[index].awayTeamName,
-                new Date());
+                mGames[index].date);
         }
         return null;
     }

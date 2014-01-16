@@ -9,6 +9,9 @@ import android.view.ViewGroup.MarginLayoutParams;
 import android.content.Context;
 import android.view.Gravity;
 import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.Calendar;
+import java.lang.StringBuilder;
 
 public class GameSnapshotView extends BoxView {
     private static final String TAG = "GameSnapshotView";
@@ -45,7 +48,7 @@ public class GameSnapshotView extends BoxView {
         awayView.setId(R.id.snapshot_away_team);
 
         TextView dateView = new TextView(context);
-        dateView.setText("Feb 14, 2014\n10:30PM");
+        dateView.setText(getDateString(date));
         dateView.setTextColor(getResources()
             .getColor(R.color.snapshot_date));
         rlp = new RelativeLayout.LayoutParams(
@@ -59,6 +62,23 @@ public class GameSnapshotView extends BoxView {
         this.addView(homeView);
         this.addView(awayView);
         this.addView(dateView);
+    }
+
+    private String getDateString(Date date) {
+        Calendar c = new GregorianCalendar();
+        c.setTime(date);
+        StringBuilder sb = new StringBuilder();
+        sb.append(c.get(Calendar.MONTH));
+        sb.append(" ");       
+        sb.append(c.get(Calendar.DATE));
+        sb.append(", ");       
+        sb.append(c.get(Calendar.YEAR));
+        sb.append("\n");       
+        sb.append(c.get(Calendar.HOUR));
+        sb.append(":");       
+        sb.append(c.get(Calendar.MINUTE));
+        sb.append(c.get(Calendar.AM_PM));
+        return sb.toString();
     }
 }
 

@@ -8,6 +8,9 @@ import java.util.Date;
 import org.xmlpull.v1.XmlPullParserException;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.text.SimpleDateFormat;
+import java.util.TimeZone;
+import java.text.ParsePosition;
 
 public class GameParser {
     static private final String TAG = "GamesParser";
@@ -47,6 +50,10 @@ public class GameParser {
                         if (game != null) {
                             game.awayTeamName = xpp.nextText();
                         }
+                    } else if (xpp.getName().equals("date")) {
+                        if (game != null) {
+                            game.date = parseDate(xpp.nextText());
+                        }
                     }
                     break;
                 case XmlPullParser.END_TAG:
@@ -66,6 +73,11 @@ public class GameParser {
             e.printStackTrace();
         }
         return null;
+    }
+
+    private Date parseDate(String dateString) {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+        return sdf.parse(dateString, new ParsePosition(0));
     }
 }
 
