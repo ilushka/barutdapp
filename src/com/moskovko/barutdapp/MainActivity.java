@@ -157,10 +157,10 @@ public class MainActivity extends ActionBarActivity {
         ft.commit();
     }
 
-    private void showGameStatsFragment() {
+    private void showHistoryFragment() {
         FragmentManager fm = getFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
-        GameStatsFragment gsf = new GameStatsFragment();
+        HistoryFragment gsf = new HistoryFragment();
         ft.replace(FRAGMENT_CONTAINER_ID, gsf);
         ft.commit();
     }
@@ -182,7 +182,7 @@ public class MainActivity extends ActionBarActivity {
         menuItems.put(MENU_GAMESTATS, new Runnable() {
             @Override
             public void run() {
-                showGameStatsFragment();
+                showHistoryFragment();
             }
         });
     }
