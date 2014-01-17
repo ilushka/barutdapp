@@ -23,10 +23,10 @@ public class HistoryFragment extends BoxListFragment {
 
         this.showProgressSpinner(true);
         try {
-            new GetGamesRequest(new ResultReceiver(new Handler()) {
+            new BaseHttpRequest(new ResultReceiver(new Handler()) {
                 @Override
                 protected void onReceiveResult(int resultCode, Bundle resultData) {
-                    String response = resultData.getString(GetGamesRequest.REQUEST_RESPONSE);
+                    String response = resultData.getString(BaseHttpRequest.REQUEST_RESPONSE);
                     Log.d(TAG, "onReceiveResult: response: " + response);
                     mGames = new GameParser(response).parse();
                     HistoryFragment.this.showProgressSpinner(false);

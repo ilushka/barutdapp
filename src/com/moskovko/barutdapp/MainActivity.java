@@ -31,7 +31,7 @@ public class MainActivity extends ActionBarActivity {
 
     private static final String MENU_SCHEDULE = "Schedule";
     private static final String MENU_ROSTER = "Roster";
-    private static final String MENU_GAMESTATS = "Game Stats";
+    private static final String MENU_HISTORY = "Game History";
 
     private static boolean DEBUG = true;
     private static int DRAWER_WIDTH = 600;
@@ -179,7 +179,7 @@ public class MainActivity extends ActionBarActivity {
                 Log.d(TAG, "MONKEY: ROSTER");
             }
         });
-        menuItems.put(MENU_GAMESTATS, new Runnable() {
+        menuItems.put(MENU_HISTORY, new Runnable() {
             @Override
             public void run() {
                 showHistoryFragment();

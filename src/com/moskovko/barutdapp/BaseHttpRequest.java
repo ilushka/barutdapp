@@ -12,38 +12,36 @@ import java.io.IOException;
 import android.os.ResultReceiver;
 import android.os.Bundle;
 
-public class GetGamesRequest extends AsyncTask<URL, Integer, Void> {
-    static private final String TAG = "GetGamesRequest";
-
+public class BaseHttpRequest extends AsyncTask<URL, Integer, String> {
     static public final String REQUEST_RESPONSE = "RequestResponse";
 
     private ResultReceiver mResultReceiver;
-    private String mResponse;
 
-    public GetGamesRequest(ResultReceiver rr) {
+    public BaseHttpRequest(ResultReceiver rr) {
         super();
         mResultReceiver = rr;
     }
 
     @Override
-    protected Void doInBackground(URL... urls) {
+    protected String doInBackground(URL... urls) {
+        String r = null;
         HttpURLConnection huc = null;
         try {
             huc = (HttpURLConnection)urls[0].openConnection();
-            mResponse = readResponse(huc.getInputStream());
+            r = readResponse(huc.getInputStream());
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
             huc.disconnect();
         }
-        return null;
+        return r;
     }
 
     @Override
-    protected void onPostExecute(Void v) {
+    protected void onPostExecute(String response) {
         if (mResultReceiver != null) {
             Bundle b = new Bundle();
-            b.putString(REQUEST_RESPONSE, mResponse);
+            b.putString(REQUEST_RESPONSE, response);
             mResultReceiver.send(1, b);
         }
     }
@@ -72,12 +70,8 @@ public class GetGamesRequest extends AsyncTask<URL, Integer, Void> {
         return null;
     }
 
+    // TODO: Parse response on the fly from stream:
     private void parseResponse(InputStream is) {
-/*
-        XmlPullParser xpp = Xml.newPullParser();
-        xpp.setFeature(XmlPullParser.FEATURE_PROCESS_NAMESPACES, false);
-        xpp.setInput(br);
-*/
     }
 }
 
