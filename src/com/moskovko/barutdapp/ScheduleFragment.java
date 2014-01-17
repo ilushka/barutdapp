@@ -28,6 +28,7 @@ public class ScheduleFragment extends BoxListFragment {
     public void onStart() {
         super.onStart();
 
+        this.showProgressSpinner(true);
         try {
             new GetGamesRequest(new ResultReceiver(new Handler()) {
                 @Override
@@ -35,11 +36,7 @@ public class ScheduleFragment extends BoxListFragment {
                     String response = resultData.getString(GetGamesRequest.REQUEST_RESPONSE);
                     Log.d(TAG, "onReceiveResult: response: " + response);
                     mGames = new GameParser(response).parse();
-/* MONKEY:
-                    for (GameParser.Game g : games) {
-                        Log.d(TAG, "MONKEY: game: home: " + g.homeTeamName + " away: " + g.awayTeamName);
-                    }
-*/
+                    ScheduleFragment.this.showProgressSpinner(false);
                     ScheduleFragment.this.populateFragment();
                 }
             }).execute(new URL("http://www.brrtr.com/schedule.xml"));
