@@ -12,6 +12,8 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.Calendar;
 import java.lang.StringBuilder;
+import java.text.DateFormatSymbols;
+import java.text.SimpleDateFormat;
 
 public class GameSnapshotView extends BoxView {
     private static final String TAG = "GameSnapshotView";
@@ -65,20 +67,8 @@ public class GameSnapshotView extends BoxView {
     }
 
     private String getDateString(Date date) {
-        Calendar c = new GregorianCalendar();
-        c.setTime(date);
-        StringBuilder sb = new StringBuilder();
-        sb.append(c.get(Calendar.MONTH));
-        sb.append(" ");       
-        sb.append(c.get(Calendar.DATE));
-        sb.append(", ");       
-        sb.append(c.get(Calendar.YEAR));
-        sb.append("\n");       
-        sb.append(c.get(Calendar.HOUR));
-        sb.append(":");       
-        sb.append(c.get(Calendar.MINUTE));
-        sb.append(c.get(Calendar.AM_PM));
-        return sb.toString();
+        SimpleDateFormat sdf = new SimpleDateFormat("MMM dd, yyyy\nhh:mmaa");
+        return sdf.format(date);
     }
 }
 
