@@ -21,6 +21,8 @@ public class GameParser {
         public String homeTeamName;
         public String awayTeamName;
         public Date date;
+        public int homeScore;
+        public int awayScore;
     }
 
     public GameParser(String xml) {
@@ -49,6 +51,14 @@ public class GameParser {
                     } else if (xpp.getName().equals("awayTeamName")) {
                         if (game != null) {
                             game.awayTeamName = xpp.nextText();
+                        }
+                    } else if (xpp.getName().equals("homeScore")) {
+                        if (game != null) {
+                            game.homeScore = Integer.parseInt(xpp.nextText());
+                        }
+                    } else if (xpp.getName().equals("awayScore")) {
+                        if (game != null) {
+                            game.awayScore = Integer.parseInt(xpp.nextText());
                         }
                     } else if (xpp.getName().equals("date")) {
                         if (game != null) {

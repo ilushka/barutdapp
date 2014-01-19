@@ -31,7 +31,7 @@ public class MainActivity extends ActionBarActivity {
 
     private static final String MENU_SCHEDULE = "Schedule";
     private static final String MENU_ROSTER = "Roster";
-    private static final String MENU_HISTORY = "Game History";
+    private static final String MENU_HISTORY = "Results";
 
     private static boolean DEBUG = true;
     private static int DRAWER_WIDTH = 600;

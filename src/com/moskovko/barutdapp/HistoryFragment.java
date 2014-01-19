@@ -32,7 +32,7 @@ public class HistoryFragment extends BoxListFragment {
                     HistoryFragment.this.showProgressSpinner(false);
                     HistoryFragment.this.populateFragment();
                 }
-            }).execute(new URL("http://www.brrtr.com/schedule.xml"));
+            }).execute(new URL("http://www.brrtr.com/results.xml"));
         } catch (MalformedURLException e) {
             e.printStackTrace();
         }
@@ -44,7 +44,9 @@ public class HistoryFragment extends BoxListFragment {
             return new HistorySnapshotView(getActivity(),
                 mGames[index].homeTeamName,
                 mGames[index].awayTeamName,
-                0, 0, mGames[index].date);
+                mGames[index].homeScore,
+                mGames[index].awayScore,
+                mGames[index].date);
         }
         return null;
     }
