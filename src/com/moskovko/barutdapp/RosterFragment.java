@@ -16,6 +16,9 @@ import java.util.Date;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
+import android.content.res.Resources;
+import android.view.Gravity;
+import android.graphics.Typeface;
 
 public class RosterFragment extends Fragment {
     static private final String TAG = "RosterFragment";
@@ -30,30 +33,56 @@ public class RosterFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater,
         ViewGroup container, Bundle savedInstanceState)
     {
+        Resources r = getActivity().getResources();
+
         TableLayout tl = new TableLayout(getActivity());
         tl.setLayoutParams(new TableLayout.LayoutParams(
             LayoutParams.FILL_PARENT,
             LayoutParams.FILL_PARENT));
-        tl.setPadding(20, 20, 20, 10);
+        tl.setPadding(r.getInteger(R.integer.box_margin_left),
+            r.getInteger(R.integer.box_margin_top),
+            r.getInteger(R.integer.box_margin_right),
+            r.getInteger(R.integer.box_margin_bottom));
+
         for (int ii = 0; ii < 10; ++ii) {
-          TextView name = new TextView(getActivity());
-          name.setLayoutParams(new TableRow.LayoutParams(
-              300, LayoutParams.WRAP_CONTENT));
-          name.setTextColor(0xFFFFFFFF);
-          name.setText("Marian Udrea Spenea");
+            View divider = new View(getActivity());
+            divider.setLayoutParams(new TableRow.LayoutParams(
+                LayoutParams.FILL_PARENT, 2));
+            //divider.setBackgroundColor(0xFF000000);
+            
+            TextView name;
+            if (ii == 0) {
+                name = new TextView(getActivity());
+                name.setLayoutParams(new TableRow.LayoutParams(300, 70));
+                name.setTextColor(r.getColor(R.color.box_background));
+                name.setText("NAME");
+                name.setGravity(Gravity.CENTER_VERTICAL);
+                name.setPadding(20, 0, 20, 0);
+            } else {
+                name = new TextView(getActivity());
+                name.setLayoutParams(new TableRow.LayoutParams(300, 110));
+                name.setTextColor(0xFFFFFFFF);
+                name.setText("Marian Udrea Spenea");
+                name.setGravity(Gravity.CENTER_VERTICAL);
+                name.setPadding(20, 0, 20, 0);
+            }
 
-          TableRow.LayoutParams trlp = new TableRow.LayoutParams(
-              LayoutParams.FILL_PARENT,
-              LayoutParams.WRAP_CONTENT);
-          trlp.setMargins(0, 20, 0, 20);
-          TableRow tr = new TableRow(getActivity());
-          tr.setLayoutParams(trlp);
-          tr.setBackgroundResource(R.color.box_background);
-          tr.addView(name);
+            TableRow.LayoutParams trlp = new TableRow.LayoutParams(
+                LayoutParams.FILL_PARENT,
+                LayoutParams.WRAP_CONTENT);
+            TableRow tr = new TableRow(getActivity());
+            tr.setLayoutParams(trlp);
+            if (ii == 0) {
+                tr.setBackgroundColor(0xFF380000);
+            } else {
+                tr.setBackgroundResource(R.color.box_background);
+            }
+            tr.addView(name);
 
-          tl.addView(tr, new TableLayout.LayoutParams(
-              LayoutParams.FILL_PARENT,
-              LayoutParams.WRAP_CONTENT));
+            tl.addView(tr, new TableLayout.LayoutParams(
+                LayoutParams.FILL_PARENT,
+                LayoutParams.WRAP_CONTENT));
+            tl.addView(divider);
         }
 
         mScrollView = new ScrollView(getActivity());
