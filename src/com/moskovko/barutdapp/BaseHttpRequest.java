@@ -46,6 +46,9 @@ public class BaseHttpRequest extends AsyncTask<URL, Integer, String> {
         }
     }
 
+    // TODO: Right now response is a String. Instead one
+    // could pass a "parsing object" that will parse the
+    // stream on-the-fly and return actual parsed-out objects.
     private String readResponse(InputStream is) {
         BufferedReader br = null;
         try {
@@ -68,10 +71,6 @@ public class BaseHttpRequest extends AsyncTask<URL, Integer, String> {
             }
         }
         return null;
-    }
-
-    // TODO: Parse response on the fly from stream:
-    private void parseResponse(InputStream is) {
     }
 }
 
