@@ -165,6 +165,14 @@ public class MainActivity extends ActionBarActivity {
         ft.commit();
     }
 
+    private void showRosterFragment() {
+        FragmentManager fm = getFragmentManager();
+        FragmentTransaction ft = fm.beginTransaction();
+        RosterFragment rf = new RosterFragment();
+        ft.replace(FRAGMENT_CONTAINER_ID, rf);
+        ft.commit();
+    }
+
     private void initMenuItems() {
         menuItems = new HashMap<String, Runnable>();
         menuItems.put(MENU_SCHEDULE, new Runnable() {
@@ -176,7 +184,7 @@ public class MainActivity extends ActionBarActivity {
         menuItems.put(MENU_ROSTER, new Runnable() {
             @Override
             public void run() {
-                Log.d(TAG, "MONKEY: ROSTER");
+                showRosterFragment();
             }
         });
         menuItems.put(MENU_HISTORY, new Runnable() {

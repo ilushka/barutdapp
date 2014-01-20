@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.widget.ScrollView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
+import android.content.res.Resources;
 
 public abstract class BoxListFragment extends Fragment {
     private ProgressBar mProgressSpinner;
@@ -48,12 +49,16 @@ public abstract class BoxListFragment extends Fragment {
 
         int index = 0;
         View v = getViewForBox(index);
+        Resources r = getActivity().getResources();
         while (v != null) {
             LinearLayout.LayoutParams lp =
                 new LinearLayout.LayoutParams(
                     LayoutParams.FILL_PARENT,
                     LayoutParams.WRAP_CONTENT);
-            lp.setMargins(20, 20, 20, 0);
+            lp.setMargins(r.getInteger(R.integer.box_margin_left),
+                r.getInteger(R.integer.box_margin_top),
+                r.getInteger(R.integer.box_margin_right),
+                r.getInteger(R.integer.box_margin_bottom));
             v.setLayoutParams(lp);
             ll.addView(v);
             index++;
