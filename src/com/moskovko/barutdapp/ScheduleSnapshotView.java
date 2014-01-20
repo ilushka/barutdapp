@@ -19,7 +19,7 @@ public class ScheduleSnapshotView extends BoxView {
     private static final String TAG = "ScheduleSnapshotView";
 
     private static final int DATE_FONT_SIZE = 12;
-    private static final int TEAM_FONT_SIZE = 18;
+    // private static final int TEAM_FONT_SIZE = 18;
 
     public ScheduleSnapshotView(Context context, String home,
                 String away, Date date)
@@ -34,7 +34,8 @@ public class ScheduleSnapshotView extends BoxView {
             300, LayoutParams.WRAP_CONTENT);
         rlp.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
         homeView.setLayoutParams(rlp); 
-        homeView.setTextSize(TEAM_FONT_SIZE);
+        homeView.setTextSize(context.getResources()
+            .getInteger(R.integer.main_font_size));
         homeView.setId(R.id.snapshot_home_team);
 
         TextView awayView = new TextView(context);
@@ -45,7 +46,8 @@ public class ScheduleSnapshotView extends BoxView {
             300, LayoutParams.WRAP_CONTENT);
         rlp.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
         awayView.setLayoutParams(rlp);
-        awayView.setTextSize(TEAM_FONT_SIZE);
+        awayView.setTextSize(context.getResources()
+            .getInteger(R.integer.main_font_size));
         awayView.setGravity(Gravity.RIGHT);
         awayView.setId(R.id.snapshot_away_team);
 
