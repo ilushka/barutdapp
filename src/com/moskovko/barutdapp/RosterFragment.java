@@ -44,87 +44,40 @@ public class RosterFragment extends Fragment {
             r.getInteger(R.integer.box_margin_right),
             r.getInteger(R.integer.box_margin_bottom));
 
-        for (int ii = 0; ii < 10; ++ii) {
+        int xx = 0;
+        int yy = 0;
+        View cell = getViewForCell(xx, yy);
+        while (cell != null) {
             View divider = new View(getActivity());
             divider.setLayoutParams(new TableRow.LayoutParams(
                 LayoutParams.FILL_PARENT, 6));
             //divider.setBackgroundColor(0xFF000000);
-            
-            TextView number, position, name;
-            if (ii == 0) {
-                number = new TextView(getActivity());
-                number.setLayoutParams(new TableRow.LayoutParams(
-                    LayoutParams.WRAP_CONTENT, 80));
-                number.setTextColor(0xFFFF0000);
-                number.setText("#");
-                number.setTextSize(r.getInteger(R.integer.main_font_size));
-                number.setGravity(Gravity.CENTER_VERTICAL);
-                number.setPadding(20, 0, 20, 0);
 
-                position = new TextView(getActivity());
-                position.setLayoutParams(new TableRow.LayoutParams(
-                    LayoutParams.WRAP_CONTENT, 80));
-                position.setTextColor(0xFFFF0000);
-                position.setText("POS");
-                position.setTextSize(r.getInteger(R.integer.main_font_size));
-                position.setGravity(Gravity.CENTER_VERTICAL);
-                position.setPadding(20, 0, 20, 0);
-
-                name = new TextView(getActivity());
-                name.setLayoutParams(new TableRow.LayoutParams(
-                    LayoutParams.WRAP_CONTENT, 80));
-                name.setTextColor(0xFFFF0000);
-                name.setText("NAME");
-                name.setTextSize(r.getInteger(R.integer.main_font_size));
-                name.setGravity(Gravity.CENTER_VERTICAL);
-                name.setPadding(20, 0, 20, 0);
-            } else {
-                number = new TextView(getActivity());
-                number.setLayoutParams(new TableRow.LayoutParams(
-                    LayoutParams.WRAP_CONTENT, 80));
-                number.setTextColor(0xFFFFFFFF);
-                number.setText("31");
-                number.setTextSize(r.getInteger(R.integer.main_font_size));
-                number.setGravity(Gravity.CENTER_VERTICAL);
-                number.setPadding(20, 0, 20, 0);
-
-                position = new TextView(getActivity());
-                position.setLayoutParams(new TableRow.LayoutParams(
-                    LayoutParams.WRAP_CONTENT, 80));
-                position.setTextColor(0xFFFFFFFF);
-                position.setText("D-G");
-                position.setTextSize(r.getInteger(R.integer.main_font_size));
-                position.setGravity(Gravity.CENTER_VERTICAL);
-                position.setPadding(20, 0, 20, 0);
-
-                name = new TextView(getActivity());
-                name.setLayoutParams(new TableRow.LayoutParams(
-                    LayoutParams.WRAP_CONTENT, 80));
-                name.setTextColor(0xFFFFFFFF);
-                name.setText("M. Udrea Spenea");
-                name.setTextSize(r.getInteger(R.integer.main_font_size));
-                name.setGravity(Gravity.CENTER_VERTICAL);
-                name.setPadding(20, 0, 20, 0);
-            }
-
-            TableRow.LayoutParams trlp = new TableRow.LayoutParams(
-                LayoutParams.FILL_PARENT,
-                LayoutParams.WRAP_CONTENT);
             TableRow tr = new TableRow(getActivity());
-            tr.setLayoutParams(trlp);
-            if (ii == 0) {
+            tr.setLayoutParams(new TableRow.LayoutParams(
+                LayoutParams.FILL_PARENT,
+                LayoutParams.WRAP_CONTENT));
+            if (yy == 0) {
                 tr.setBackgroundColor(0xFF380000);
             } else {
                 tr.setBackgroundResource(R.color.box_background);
             }
-            tr.addView(number);
-            tr.addView(position);
-            tr.addView(name);
+
+            do {
+                tr.addView(cell);
+                xx++;
+                cell = getViewForCell(xx, yy);
+            } while (cell != null);
 
             tl.addView(tr, new TableLayout.LayoutParams(
                 LayoutParams.FILL_PARENT,
                 LayoutParams.WRAP_CONTENT));
             tl.addView(divider);
+
+            yy++;
+            xx = 0;
+            Log.d(TAG, "MONKEY: yy: " + yy);
+            cell = getViewForCell(xx, yy);
         }
 
         mScrollView = new ScrollView(getActivity());
@@ -138,6 +91,55 @@ public class RosterFragment extends Fragment {
         mScrollView.addView(tl);
 
         return mScrollView;
+    }
+
+    private View getViewForCell(int column, int row) {
+        Log.d(TAG, "MONKEY: row: " + row);
+        int textColor = 0xFFFFFFFF;
+        if (row == 0) {
+            textColor = 0xFFFFFF00;
+        }
+
+        // TODO: Hardcoding 10 rows for now:
+        if (row == 10)
+            return null;
+
+        Resources r = getActivity().getResources();
+        TextView cell = new TextView(getActivity());
+        cell.setLayoutParams(new TableRow.LayoutParams(
+            LayoutParams.WRAP_CONTENT, 80));
+        cell.setTextColor(textColor);
+        cell.setTextSize(r.getInteger(R.integer.main_font_size));
+        cell.setGravity(Gravity.CENTER_VERTICAL);
+        cell.setPadding(20, 0, 20, 0);
+
+        switch (column) {
+        case 0:
+            if (row == 0) {
+                cell.setText("#"); 
+            } else {
+                cell.setText("31"); 
+            }
+            break;
+        case 1:
+            if (row == 0) {
+                cell.setText("POS");
+            } else {
+                cell.setText("D-G"); 
+            }
+            break;
+        case 2:
+            if (row == 0) {
+                cell.setText("NAME"); 
+            } else {
+                cell.setText("M. Udrea Spenea"); 
+            }
+            break;
+        default:
+            return null;
+        }
+
+        return cell;
     }
 
 /*
