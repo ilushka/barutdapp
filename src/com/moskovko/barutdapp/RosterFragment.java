@@ -21,10 +21,10 @@ import android.view.Gravity;
 import android.graphics.Typeface;
 import android.widget.ImageView;
 
-public class RosterFragment extends Fragment {
+public class RosterFragment extends FragmentWithSpinner {
     static private final String TAG = "RosterFragment";
 
-    private ScrollView mScrollView;
+    //private ScrollView mScrollView;
 
     public RosterFragment() {
         super();
@@ -34,6 +34,8 @@ public class RosterFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater,
         ViewGroup container, Bundle savedInstanceState)
     {
+        super.onCreateView(inflater, container, savedInstanceState);
+
         Resources r = getActivity().getResources();
 
         TableLayout tl = new TableLayout(getActivity());
@@ -80,6 +82,7 @@ public class RosterFragment extends Fragment {
             cell = getViewForCell(xx, yy);
         }
 
+/*
         mScrollView = new ScrollView(getActivity());
         mScrollView.setLayoutParams(new LayoutParams(
             LayoutParams.FILL_PARENT,
@@ -88,6 +91,7 @@ public class RosterFragment extends Fragment {
         // So that its contents gets stretched out to fullscreen:
         mScrollView.setFillViewport(true);
         mScrollView.setVerticalScrollBarEnabled(false);
+*/
         mScrollView.addView(tl);
 
         return mScrollView;
