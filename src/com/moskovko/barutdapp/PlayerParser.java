@@ -12,82 +12,84 @@ import java.text.SimpleDateFormat;
 import java.util.TimeZone;
 import java.text.ParsePosition;
 
-public class GameParser {
-    static private final String TAG = "GamesParser";
+public class PlayerParser {
+    static private final String TAG = "PlayerParser";
 
     private String mXML;
 
-    public static class Game {
-        public String homeTeamName;
-        public String awayTeamName;
-        public Date date;
-        public int homeScore;
-        public int awayScore;
+    public static class Player {
+        public enum Position {
+            DEFENDER;
+        }
+
+        public String name;
+        public Position position;
+        public int number;
+        public String country;
     }
 
-    public GameParser(String xml) {
+    public PlayerParser(String xml) {
         mXML = xml;
     }
 
-    public Game[] parse() {
+    public Player[] parse() {
         try {
-            ArrayList<Game> games = null;
-            Game game = null;
+            ArrayList<Player> players = null;
+            Player player = null;
             XmlPullParser xpp = Xml.newPullParser();
             xpp.setInput(new StringReader(mXML));
             int eventType = xpp.getEventType();
             while (eventType != XmlPullParser.END_DOCUMENT) {
                 switch (eventType) {
                 case XmlPullParser.START_DOCUMENT:
-                    games = new ArrayList<Game>();
+                    players = new ArrayList<Player>();
                     break;
                 case XmlPullParser.START_TAG:
-                    if (xpp.getName().equals("game")) {
-                        game = new Game();
+/*
+                    if (xpp.getName().equals("player")) {
+                        player = new Player();
                     } else if (xpp.getName().equals("homeTeamName")) {
-                        if (game != null) {
-                            game.homeTeamName = xpp.nextText();
+                        if (player != null) {
+                            player.homeTeamName = xpp.nextText();
                         }
                     } else if (xpp.getName().equals("awayTeamName")) {
-                        if (game != null) {
-                            game.awayTeamName = xpp.nextText();
+                        if (player != null) {
+                            player.awayTeamName = xpp.nextText();
                         }
                     } else if (xpp.getName().equals("homeScore")) {
-                        if (game != null) {
-                            game.homeScore = Integer.parseInt(xpp.nextText());
+                        if (player != null) {
+                            player.homeScore = Integer.parseInt(xpp.nextText());
                         }
                     } else if (xpp.getName().equals("awayScore")) {
-                        if (game != null) {
-                            game.awayScore = Integer.parseInt(xpp.nextText());
+                        if (player != null) {
+                            player.awayScore = Integer.parseInt(xpp.nextText());
                         }
                     } else if (xpp.getName().equals("date")) {
-                        if (game != null) {
-                            game.date = parseDate(xpp.nextText());
+                        if (player != null) {
+                            player.date = parseDate(xpp.nextText());
                         }
                     }
+*/
                     break;
                 case XmlPullParser.END_TAG:
-                    if (xpp.getName().equals("game")) {
-                        if (game != null) {
-                            games.add(game);
+/*
+                    if (xpp.getName().equals("player")) {
+                        if (player != null) {
+                            players.add(player);
                         }
                     }
+*/
                     break;
                 }
                 eventType = xpp.next();
             }
-            return games.toArray(new Game[0]);
+            return players.toArray(new Player[0]);
         } catch (XmlPullParserException e) {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
         return null;
-    }
-
-    private Date parseDate(String dateString) {
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-        return sdf.parse(dateString, new ParsePosition(0));
     }
 }
 
