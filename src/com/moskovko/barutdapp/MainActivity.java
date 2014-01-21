@@ -114,8 +114,10 @@ public class MainActivity extends ActionBarActivity {
 
             @Override
             public void onDrawerSlide(View drawerView, float slideOffset) {
+/*
                 if (DEBUG) Log.d(TAG, "onDrawerSlide: slideOffset: " + slideOffset);
                 slideFragmentContainer(slideOffset);
+*/
             }
 
             @Override

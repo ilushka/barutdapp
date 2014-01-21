@@ -14,15 +14,35 @@ import java.text.ParsePosition;
 
 public class PlayerParser {
     static private final String TAG = "PlayerParser";
+    static private final boolean DEBUG = false;
 
     private String mXML;
 
     public static class Player {
         public enum Position {
-            DEFENDER;
+            UNKNOWN, DEFENDER, MIDFIELDER,
+            FORWARD, GOALKEEPER;
+
+            @Override
+            public String toString() {
+                switch (this) {
+                case UNKNOWN:
+                    return "?";
+                case DEFENDER:
+                    return "D";
+                case MIDFIELDER:
+                    return "M";
+                case FORWARD:
+                    return "F";
+                case GOALKEEPER:
+                    return "G";
+                }
+                return "?";
+            }
         }
 
         public String name;
+        public int playerID;
         public Position position;
         public int number;
         public String country;
@@ -45,40 +65,42 @@ public class PlayerParser {
                     players = new ArrayList<Player>();
                     break;
                 case XmlPullParser.START_TAG:
-/*
                     if (xpp.getName().equals("player")) {
+                        if (DEBUG) Log.d(TAG, "parse: player");
                         player = new Player();
-                    } else if (xpp.getName().equals("homeTeamName")) {
+                    } else if (xpp.getName().equals("name")) {
                         if (player != null) {
-                            player.homeTeamName = xpp.nextText();
+                            player.name = xpp.nextText();
+                            if (DEBUG) Log.d(TAG, "parse: name: " + player.name);
                         }
-                    } else if (xpp.getName().equals("awayTeamName")) {
+                    } else if (xpp.getName().equals("playerId")) {
                         if (player != null) {
-                            player.awayTeamName = xpp.nextText();
+                            player.playerID = Integer.parseInt(xpp.nextText());
+                            if (DEBUG) Log.d(TAG, "parse: playerId: " + player.playerID);
                         }
-                    } else if (xpp.getName().equals("homeScore")) {
+                    } else if (xpp.getName().equals("position")) {
                         if (player != null) {
-                            player.homeScore = Integer.parseInt(xpp.nextText());
+                            player.position = parsePosition(xpp.nextText());
+                            if (DEBUG) Log.d(TAG, "parse: position: " + player.position);
                         }
-                    } else if (xpp.getName().equals("awayScore")) {
+                    } else if (xpp.getName().equals("number")) {
                         if (player != null) {
-                            player.awayScore = Integer.parseInt(xpp.nextText());
+                            player.number = Integer.parseInt(xpp.nextText());
+                            if (DEBUG) Log.d(TAG, "parse: number: " + player.number);
                         }
-                    } else if (xpp.getName().equals("date")) {
+                    } else if (xpp.getName().equals("country")) {
                         if (player != null) {
-                            player.date = parseDate(xpp.nextText());
+                            player.country = xpp.nextText();
+                            if (DEBUG) Log.d(TAG, "parse: country: " + player.country);
                         }
                     }
-*/
                     break;
                 case XmlPullParser.END_TAG:
-/*
                     if (xpp.getName().equals("player")) {
                         if (player != null) {
                             players.add(player);
                         }
                     }
-*/
                     break;
                 }
                 eventType = xpp.next();
@@ -90,6 +112,19 @@ public class PlayerParser {
             e.printStackTrace();
         }
         return null;
+    }
+
+    private Player.Position parsePosition(String position) {
+        if (position.equals("D")) {
+            return Player.Position.DEFENDER;
+        } else if (position.equals("M")) {
+            return Player.Position.MIDFIELDER;
+        } else if (position.equals("F")) {
+            return Player.Position.FORWARD;
+        } else if (position.equals("G")) {
+            return Player.Position.GOALKEEPER;
+        }
+        return Player.Position.UNKNOWN;
     }
 }
 

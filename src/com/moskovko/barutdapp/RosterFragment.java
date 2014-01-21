@@ -23,18 +23,100 @@ import android.widget.ImageView;
 
 public class RosterFragment extends FragmentWithSpinner {
     static private final String TAG = "RosterFragment";
+    static private final boolean DEBUG = true; 
 
-    //private ScrollView mScrollView;
+    private PlayerParser.Player[] mPlayers;
 
     public RosterFragment() {
         super();
     }
 
-    @Override
-    public View onCreateView(LayoutInflater inflater,
-        ViewGroup container, Bundle savedInstanceState)
-    {
-        super.onCreateView(inflater, container, savedInstanceState);
+    private TextView createTextCell() {
+        Resources r = getActivity().getResources();
+        TextView cell = new TextView(getActivity());
+        cell.setLayoutParams(new TableRow.LayoutParams(
+            LayoutParams.WRAP_CONTENT, 80));
+        cell.setTextColor(0xFFFFFFFF);
+        cell.setTextSize(r.getInteger(R.integer.main_font_size));
+        cell.setGravity(Gravity.CENTER_VERTICAL);
+        cell.setPadding(20, 0, 20, 0);
+        return cell;
+    }
+
+    private ImageView createImageCell() {
+        ImageView cell = new ImageView(getActivity());
+        cell.setLayoutParams(new TableRow.LayoutParams(
+            LayoutParams.WRAP_CONTENT, 80));
+        return cell;
+    }
+
+    private View getViewForCell(int column, int row) {
+        if (row >= mPlayers.length) {
+            return null;
+        }
+        
+        if (DEBUG) {
+            Log.d(TAG, "getViewCell: column: " + column +
+                " row: " + row);
+        }
+
+        View cell;
+        PlayerParser.Player player = mPlayers[row];
+        switch (column) {
+        case 0: { // Number
+            TextView tv = createTextCell();
+            if (row == 0) {
+                tv.setTextColor(0xFFFFFF00);
+                tv.setText("#"); 
+            } else {
+                tv.setText(Integer.toString(player.number)); 
+            }
+            cell = (View)tv;
+        }
+        break;
+        case 1: { // Position:
+            TextView tv = createTextCell();
+            if (row == 0) {
+                tv.setTextColor(0xFFFFFF00);
+                tv.setText("POS");
+            } else {
+                tv.setText(player.position.toString()); 
+            }
+            cell = (View)tv;
+        }
+        break;
+        case 2: { // Name:
+            TextView tv = createTextCell();
+            if (row == 0) {
+                TableRow.LayoutParams trlp =
+                    new TableRow.LayoutParams(
+                        LayoutParams.WRAP_CONTENT, 80);
+                trlp.span = 2;
+                tv.setLayoutParams(trlp);
+                tv.setTextColor(0xFFFFFF00);
+                tv.setText("NAME"); 
+            } else {
+                tv.setText(player.name); 
+            }
+            cell = (View)tv;
+        }
+        break;
+        case 3: { // Country icon (doesn't have header)
+            ImageView iv = createImageCell();
+            iv.setImageResource(getCountryFlagIcon(player.country));
+            cell = (View)iv;
+        }
+        break;
+        default:
+            cell = null;
+            break;
+        }
+
+        return cell;
+    }
+
+    private void populateFragment() {
+        mScrollView.removeAllViews();
 
         Resources r = getActivity().getResources();
 
@@ -82,100 +164,15 @@ public class RosterFragment extends FragmentWithSpinner {
             cell = getViewForCell(xx, yy);
         }
 
-/*
-        mScrollView = new ScrollView(getActivity());
-        mScrollView.setLayoutParams(new LayoutParams(
-            LayoutParams.FILL_PARENT,
-            LayoutParams.FILL_PARENT));
-        mScrollView.setBackgroundResource(R.color.main_background);
-        // So that its contents gets stretched out to fullscreen:
-        mScrollView.setFillViewport(true);
-        mScrollView.setVerticalScrollBarEnabled(false);
-*/
         mScrollView.addView(tl);
-
-        return mScrollView;
     }
 
-    private TextView createTextCell() {
+    private int getCountryFlagIcon(String country) {
         Resources r = getActivity().getResources();
-        TextView cell = new TextView(getActivity());
-        cell.setLayoutParams(new TableRow.LayoutParams(
-            LayoutParams.WRAP_CONTENT, 80));
-        cell.setTextColor(0xFFFFFFFF);
-        cell.setTextSize(r.getInteger(R.integer.main_font_size));
-        cell.setGravity(Gravity.CENTER_VERTICAL);
-        cell.setPadding(20, 0, 20, 0);
-        return cell;
-    }
+        return r.getIdentifier(country.toLowerCase(), "drawable",
+            "com.moskovko.barutdapp");
+    }    
 
-    private ImageView createImageCell() {
-        ImageView cell = new ImageView(getActivity());
-        cell.setLayoutParams(new TableRow.LayoutParams(
-            LayoutParams.WRAP_CONTENT, 80));
-        return cell;
-    }
-
-    private View getViewForCell(int column, int row) {
-        // TODO: Hardcoding 10 rows for now:
-        if (row == 10)
-            return null;
-        
-        View cell;
-        switch (column) {
-        case 0: {
-            TextView tv = createTextCell();
-            if (row == 0) {
-                tv.setTextColor(0xFFFFFF00);
-                tv.setText("#"); 
-            } else {
-                tv.setText("31"); 
-            }
-            cell = (View)tv;
-        }
-        break;
-        case 1: {
-            TextView tv = createTextCell();
-            if (row == 0) {
-                tv.setTextColor(0xFFFFFF00);
-                tv.setText("POS");
-            } else {
-                tv.setText("D-G"); 
-            }
-            cell = (View)tv;
-        }
-        break;
-        case 2: {
-            TextView tv = createTextCell();
-            if (row == 0) {
-                TableRow.LayoutParams trlp =
-                    new TableRow.LayoutParams(
-                        LayoutParams.WRAP_CONTENT, 80);
-                trlp.span = 2;
-                tv.setLayoutParams(trlp);
-                tv.setTextColor(0xFFFFFF00);
-                tv.setText("NAME"); 
-            } else {
-                tv.setText("M. Udrea Spenea"); 
-            }
-            cell = (View)tv;
-        }
-        break;
-        case 3: {
-            ImageView iv = createImageCell();
-            iv.setImageResource(R.drawable.ro);
-            cell = (View)iv;
-        }
-        break;
-        default:
-            cell = null;
-            break;
-        }
-
-        return cell;
-    }
-
-/*
     @Override
     public void onStart() {
         super.onStart();
@@ -187,26 +184,14 @@ public class RosterFragment extends FragmentWithSpinner {
                 protected void onReceiveResult(int resultCode, Bundle resultData) {
                     String response = resultData.getString(BaseHttpRequest.REQUEST_RESPONSE);
                     Log.d(TAG, "onReceiveResult: response: " + response);
-                    mGames = new GameParser(response).parse();
-                    ScheduleFragment.this.showProgressSpinner(false);
-                    ScheduleFragment.this.populateFragment();
+                    mPlayers = new PlayerParser(response).parse();
+                    RosterFragment.this.showProgressSpinner(false);
+                    RosterFragment.this.populateFragment();
                 }
-            }).execute(new URL("http://www.brrtr.com/schedule.xml"));
+            }).execute(new URL("http://www.brrtr.com/roster.xml"));
         } catch (MalformedURLException e) {
             e.printStackTrace();
         }
     }
-
-    @Override
-    public View getViewForBox(int index) {
-        if (index < mGames.length) {
-            return new ScheduleSnapshotView(getActivity(),
-                mGames[index].homeTeamName,
-                mGames[index].awayTeamName,
-                mGames[index].date);
-        }
-        return null;
-    }
-*/
 }
 
