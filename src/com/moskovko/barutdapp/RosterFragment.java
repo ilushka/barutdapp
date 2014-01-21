@@ -19,6 +19,7 @@ import android.widget.TextView;
 import android.content.res.Resources;
 import android.view.Gravity;
 import android.graphics.Typeface;
+import android.widget.ImageView;
 
 public class RosterFragment extends Fragment {
     static private final String TAG = "RosterFragment";
@@ -65,7 +66,7 @@ public class RosterFragment extends Fragment {
 
             do {
                 tr.addView(cell);
-                xx++;
+                xx += ((TableRow.LayoutParams)cell.getLayoutParams()).span;
                 cell = getViewForCell(xx, yy);
             } while (cell != null);
 
@@ -76,7 +77,6 @@ public class RosterFragment extends Fragment {
 
             yy++;
             xx = 0;
-            Log.d(TAG, "MONKEY: yy: " + yy);
             cell = getViewForCell(xx, yy);
         }
 
@@ -93,50 +93,79 @@ public class RosterFragment extends Fragment {
         return mScrollView;
     }
 
-    private View getViewForCell(int column, int row) {
-        Log.d(TAG, "MONKEY: row: " + row);
-        int textColor = 0xFFFFFFFF;
-        if (row == 0) {
-            textColor = 0xFFFFFF00;
-        }
-
-        // TODO: Hardcoding 10 rows for now:
-        if (row == 10)
-            return null;
-
+    private TextView createTextCell() {
         Resources r = getActivity().getResources();
         TextView cell = new TextView(getActivity());
         cell.setLayoutParams(new TableRow.LayoutParams(
             LayoutParams.WRAP_CONTENT, 80));
-        cell.setTextColor(textColor);
+        cell.setTextColor(0xFFFFFFFF);
         cell.setTextSize(r.getInteger(R.integer.main_font_size));
         cell.setGravity(Gravity.CENTER_VERTICAL);
         cell.setPadding(20, 0, 20, 0);
+        return cell;
+    }
 
-        switch (column) {
-        case 0:
-            if (row == 0) {
-                cell.setText("#"); 
-            } else {
-                cell.setText("31"); 
-            }
-            break;
-        case 1:
-            if (row == 0) {
-                cell.setText("POS");
-            } else {
-                cell.setText("D-G"); 
-            }
-            break;
-        case 2:
-            if (row == 0) {
-                cell.setText("NAME"); 
-            } else {
-                cell.setText("M. Udrea Spenea"); 
-            }
-            break;
-        default:
+    private ImageView createImageCell() {
+        ImageView cell = new ImageView(getActivity());
+        cell.setLayoutParams(new TableRow.LayoutParams(
+            LayoutParams.WRAP_CONTENT, 80));
+        return cell;
+    }
+
+    private View getViewForCell(int column, int row) {
+        // TODO: Hardcoding 10 rows for now:
+        if (row == 10)
             return null;
+        
+        View cell;
+        switch (column) {
+        case 0: {
+            TextView tv = createTextCell();
+            if (row == 0) {
+                tv.setTextColor(0xFFFFFF00);
+                tv.setText("#"); 
+            } else {
+                tv.setText("31"); 
+            }
+            cell = (View)tv;
+        }
+        break;
+        case 1: {
+            TextView tv = createTextCell();
+            if (row == 0) {
+                tv.setTextColor(0xFFFFFF00);
+                tv.setText("POS");
+            } else {
+                tv.setText("D-G"); 
+            }
+            cell = (View)tv;
+        }
+        break;
+        case 2: {
+            TextView tv = createTextCell();
+            if (row == 0) {
+                TableRow.LayoutParams trlp =
+                    new TableRow.LayoutParams(
+                        LayoutParams.WRAP_CONTENT, 80);
+                trlp.span = 2;
+                tv.setLayoutParams(trlp);
+                tv.setTextColor(0xFFFFFF00);
+                tv.setText("NAME"); 
+            } else {
+                tv.setText("M. Udrea Spenea"); 
+            }
+            cell = (View)tv;
+        }
+        break;
+        case 3: {
+            ImageView iv = createImageCell();
+            iv.setImageResource(R.drawable.ro);
+            cell = (View)iv;
+        }
+        break;
+        default:
+            cell = null;
+            break;
         }
 
         return cell;
