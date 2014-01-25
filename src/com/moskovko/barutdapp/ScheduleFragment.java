@@ -35,7 +35,7 @@ public class ScheduleFragment extends BoxListFragment {
                 protected void onReceiveResult(int resultCode, Bundle resultData) {
                     String response = resultData.getString(BaseHttpRequest.REQUEST_RESPONSE);
                     Log.d(TAG, "onReceiveResult: response: " + response);
-                    mGames = null; new GameParser(response).parse();
+                    mGames = new GameParser(response).parse();
                     ScheduleFragment.this.showProgressSpinner(false);
                     if ((mGames == null) || (mGames.length == 0)) {
                         ScheduleFragment.this.showSingleMessage("No schedule available :(");
