@@ -1,6 +1,5 @@
 package com.moskovko.barutdapp;
 
-//import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.DrawerLayout.DrawerListener;
@@ -10,9 +9,7 @@ import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup.LayoutParams;
 import android.view.ViewGroup;
-//import android.view.Window;
 import android.widget.AbsoluteLayout;
-import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ArrayAdapter;
 import android.app.FragmentManager;
@@ -23,8 +20,9 @@ import android.content.Context;
 import android.graphics.drawable.ColorDrawable;
 import android.app.Fragment;
 import java.util.HashMap;
-import java.util.Map;
 import java.lang.Runnable;
+import android.os.Build;
+import android.view.MenuItem;
 
 public class MainActivity extends ActionBarActivity {
     private static final String TAG = "MainActivity";
@@ -59,8 +57,11 @@ public class MainActivity extends ActionBarActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //requestWindowFeature(Window.FEATURE_NO_TITLE);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
+            getActionBar().setHomeButtonEnabled(true);
+        }
 
-        initMenuItems();
+        initDrawerMenuItems();
 
         // Container for each "section", which slides along with drawer:
         this.mFragmentContainer = new AbsoluteLayout(this);
@@ -132,6 +133,25 @@ public class MainActivity extends ActionBarActivity {
         showFirstFragment(new ScheduleFragment());
     }
 
+    private void toggleDrawer() {
+        if (this.mDrawerLayout.isDrawerOpen(Gravity.LEFT)) {
+            this.mDrawerLayout.closeDrawer(Gravity.LEFT);
+        } else {
+            this.mDrawerLayout.openDrawer(Gravity.LEFT);
+        }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+        case android.R.id.home:
+            toggleDrawer();
+            return true;
+        default:
+            return super.onOptionsItemSelected(item);
+        }
+    }
+
     private void slideFragmentContainer(float offset) {
         int width = DRAWER_WIDTH;
         float delta = (width * offset);
@@ -175,7 +195,7 @@ public class MainActivity extends ActionBarActivity {
         ft.commit();
     }
 
-    private void initMenuItems() {
+    private void initDrawerMenuItems() {
         menuItems = new HashMap<String, Runnable>();
         menuItems.put(MENU_SCHEDULE, new Runnable() {
             @Override
