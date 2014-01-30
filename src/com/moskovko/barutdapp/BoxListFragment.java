@@ -47,26 +47,6 @@ public abstract class BoxListFragment extends FragmentWithSpinner {
             v = getViewForBox(index);
         }
     }
-
-    protected void showSingleMessage(String message) {
-        mScrollView.removeAllViews();
-
-        RelativeLayout rl = new RelativeLayout(getActivity());
-        rl.setLayoutParams(new LayoutParams(
-            LayoutParams.FILL_PARENT,
-            LayoutParams.FILL_PARENT));
-        mScrollView.addView(rl);
-        
-        RelativeLayout.LayoutParams rllp = new RelativeLayout.LayoutParams(
-            LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
-        rllp.addRule(RelativeLayout.CENTER_IN_PARENT);
-        TextView tv = new TextView(getActivity());
-        tv.setLayoutParams(rllp);
-        tv.setText(message);
-        tv.setTextColor(0xFFFFFFFF);
-        tv.setTextSize(18);
-        rl.addView(tv);
-    }
-
+    
     abstract public View getViewForBox(int index);
 }

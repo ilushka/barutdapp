@@ -186,7 +186,11 @@ public class RosterFragment extends FragmentWithSpinner {
                     Log.d(TAG, "onReceiveResult: response: " + response);
                     mPlayers = new PlayerParser(response).parse();
                     RosterFragment.this.showProgressSpinner(false);
-                    RosterFragment.this.populateFragment();
+                    if ((mPlayers == null) || (mPlayers.length == 0)) {
+                        RosterFragment.this.showSingleMessage("Error");
+                    } else {
+                        RosterFragment.this.populateFragment();
+                    }
                 }
             }).execute(new URL("http://www.brrtr.com/roster.xml"));
         } catch (MalformedURLException e) {

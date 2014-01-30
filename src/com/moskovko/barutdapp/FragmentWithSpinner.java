@@ -12,6 +12,7 @@ import android.widget.ScrollView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.content.res.Resources;
+import android.widget.TextView;
 
 public abstract class FragmentWithSpinner extends Fragment {
     private ProgressBar mProgressSpinner;
@@ -65,5 +66,25 @@ public abstract class FragmentWithSpinner extends Fragment {
                 mProgressSpinner = null;
             }
         }
+    }
+
+    protected void showSingleMessage(String message) {
+        mScrollView.removeAllViews();
+
+        RelativeLayout rl = new RelativeLayout(getActivity());
+        rl.setLayoutParams(new LayoutParams(
+            LayoutParams.FILL_PARENT,
+            LayoutParams.FILL_PARENT));
+        mScrollView.addView(rl);
+        
+        RelativeLayout.LayoutParams rllp = new RelativeLayout.LayoutParams(
+            LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+        rllp.addRule(RelativeLayout.CENTER_IN_PARENT);
+        TextView tv = new TextView(getActivity());
+        tv.setLayoutParams(rllp);
+        tv.setText(message);
+        tv.setTextColor(0xFFFFFFFF);
+        tv.setTextSize(18);
+        rl.addView(tv);
     }
 }

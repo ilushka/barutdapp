@@ -30,7 +30,11 @@ public class HistoryFragment extends BoxListFragment {
                     Log.d(TAG, "onReceiveResult: response: " + response);
                     mGames = new GameParser(response).parse();
                     HistoryFragment.this.showProgressSpinner(false);
-                    HistoryFragment.this.populateFragment();
+                    if ((mGames == null) || (mGames.length == 0)) {
+                        HistoryFragment.this.showSingleMessage("Error");
+                    } else {
+                        HistoryFragment.this.populateFragment();
+                    }
                 }
             }).execute(new URL("http://www.brrtr.com/results.xml"));
         } catch (MalformedURLException e) {
