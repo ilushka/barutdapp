@@ -43,7 +43,7 @@ public class ScheduleFragment extends BoxListFragment {
                         ScheduleFragment.this.populateFragment();
                     }
                 }
-            }).execute(new URL("http://www.brrtr.com/schedule.xml"));
+            }).execute(new URL("http://stormy-citadel-3700.herokuapp.com/schedule.xml"));
         } catch (MalformedURLException e) {
             e.printStackTrace();
         }

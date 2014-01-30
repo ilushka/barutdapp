@@ -36,7 +36,7 @@ public class HistoryFragment extends BoxListFragment {
                         HistoryFragment.this.populateFragment();
                     }
                 }
-            }).execute(new URL("http://www.brrtr.com/results.xml"));
+            }).execute(new URL("http://stormy-citadel-3700.herokuapp.com/results.xml"));
         } catch (MalformedURLException e) {
             e.printStackTrace();
         }

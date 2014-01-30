@@ -192,7 +192,7 @@ public class RosterFragment extends FragmentWithSpinner {
                         RosterFragment.this.populateFragment();
                     }
                 }
-            }).execute(new URL("http://www.brrtr.com/roster.xml"));
+            }).execute(new URL("http://stormy-citadel-3700.herokuapp.com/roster.xml"));
         } catch (MalformedURLException e) {
             e.printStackTrace();
         }
