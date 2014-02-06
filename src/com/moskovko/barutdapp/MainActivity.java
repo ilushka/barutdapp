@@ -22,6 +22,8 @@ import android.app.Fragment;
 import java.util.HashMap;
 import java.lang.Runnable;
 import android.os.Build;
+import android.support.v4.app.ActionBarDrawerToggle;
+import android.content.res.Configuration;
 import android.view.MenuItem;
 
 public class MainActivity extends ActionBarActivity {
@@ -39,6 +41,7 @@ public class MainActivity extends ActionBarActivity {
     
     private View mFragmentContainer;
     private DrawerLayout mDrawerLayout;
+    private ActionBarDrawerToggle mDrawerToggle;
 
     private class DrawerArrayAdapter extends ArrayAdapter {
         public DrawerArrayAdapter(Context context, int resource, String[] objects) {
@@ -104,52 +107,52 @@ public class MainActivity extends ActionBarActivity {
         this.mDrawerLayout.setLayoutParams(new LayoutParams(
             LayoutParams.FILL_PARENT,
             LayoutParams.FILL_PARENT));
-        this.mDrawerLayout.setDrawerListener(new DrawerListener() {
-            @Override
-            public void onDrawerClosed(View drawerView) {
-            }
-
-            @Override
-            public void onDrawerOpened(View drawerView) {
-            }
-
-            @Override
-            public void onDrawerSlide(View drawerView, float slideOffset) {
-/*
-                if (DEBUG) Log.d(TAG, "onDrawerSlide: slideOffset: " + slideOffset);
-                slideFragmentContainer(slideOffset);
-*/
-            }
-
-            @Override
-            public void onDrawerStateChanged(int newState) {
-            }
-        });
         this.mDrawerLayout.addView(container);
         this.mDrawerLayout.addView(drawerListView);
 
-        setContentView(this.mDrawerLayout);
+        // Drawer toggle feature:
+        this.mDrawerToggle = new ActionBarDrawerToggle(this, this.mDrawerLayout,
+                R.drawable.ic_drawer, R.string.open_drawer, R.string.close_drawer)
+        {
+            @Override
+            public void onDrawerSlide(View drawerView, float slideOffset) {
+                if (DEBUG) Log.d(TAG, "onDrawerSlide: slideOffset: " + slideOffset);
+                super.onDrawerSlide(drawerView, slideOffset);
+                slideFragmentContainer(slideOffset);
+            }
 
+        };
+        this.mDrawerLayout.setDrawerListener(this.mDrawerToggle);
+        getActionBar().setDisplayHomeAsUpEnabled(true);
+        getActionBar().setHomeButtonEnabled(true);
+
+        setContentView(this.mDrawerLayout);
         showFirstFragment(new ScheduleFragment());
     }
 
-    private void toggleDrawer() {
-        if (this.mDrawerLayout.isDrawerOpen(Gravity.LEFT)) {
-            this.mDrawerLayout.closeDrawer(Gravity.LEFT);
-        } else {
-            this.mDrawerLayout.openDrawer(Gravity.LEFT);
-        }
+    @Override
+    protected void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+        // Sync the toggle state after onRestoreInstanceState has occurred.
+        this.mDrawerToggle.syncState();
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        this.mDrawerToggle.onConfigurationChanged(newConfig);
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-        case android.R.id.home:
-            toggleDrawer();
+        // Pass the event to ActionBarDrawerToggle, if it returns
+        // true, then it has handled the app icon touch event
+        if (this.mDrawerToggle.onOptionsItemSelected(item)) {
             return true;
-        default:
-            return super.onOptionsItemSelected(item);
         }
+        // Handle your other action bar items...
+
+        return super.onOptionsItemSelected(item);
     }
 
     private void slideFragmentContainer(float offset) {
