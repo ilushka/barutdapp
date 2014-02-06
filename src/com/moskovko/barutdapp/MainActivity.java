@@ -34,9 +34,6 @@ public class MainActivity extends ActionBarActivity {
     private static final String MENU_HISTORY = "Results";
 
     private static boolean DEBUG = true;
-    private static int DRAWER_WIDTH = 600;
-    private static int FRAGMENT_CONTAINER_ID = 666;
-    private static int DRAWER_DIVIDER_HEIGHT = 3;
     private HashMap<String, Runnable> menuItems;
     
     private View mFragmentContainer;
@@ -52,6 +49,7 @@ public class MainActivity extends ActionBarActivity {
         public View getView(int position, View convertView, ViewGroup parent) {
             TextView v = (TextView)super.getView(position, convertView, parent);
             v.setTextColor(getResources().getColor(R.color.drawer_text));
+            v.setShadowLayer(2.0f, 2.0f, 2.0f, 0xFF000000);
             return v;
         }
     }
@@ -70,7 +68,7 @@ public class MainActivity extends ActionBarActivity {
         this.mFragmentContainer = new AbsoluteLayout(this);
         this.mFragmentContainer.setLayoutParams(new AbsoluteLayout.LayoutParams(
             LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT, 0, 0));
-        this.mFragmentContainer.setId(FRAGMENT_CONTAINER_ID);
+        this.mFragmentContainer.setId(R.id.fragment_container);
 
         // Container for the mFragmentContainer:
         AbsoluteLayout container = new AbsoluteLayout(this);
@@ -83,13 +81,15 @@ public class MainActivity extends ActionBarActivity {
         ListView drawerListView = new ListView(this);
         drawerListView.setBackgroundResource(R.color.drawer_background);
         drawerListView.setLayoutParams(new DrawerLayout.LayoutParams(
-            DRAWER_WIDTH, LayoutParams.MATCH_PARENT, Gravity.START));
+            getResources().getInteger(R.integer.drawer_width),
+                LayoutParams.MATCH_PARENT, Gravity.START));
         drawerListView.setAdapter(new DrawerArrayAdapter(this,
             android.R.layout.simple_list_item_1,
             menuItems.keySet().toArray(new String[0]))); 
         drawerListView.setDivider(new ColorDrawable(getResources()
             .getColor(R.color.drawer_divider)));
-        drawerListView.setDividerHeight(DRAWER_DIVIDER_HEIGHT);
+        drawerListView.setDividerHeight(getResources()
+            .getInteger(R.integer.drawer_divider_height));
         drawerListView.setOnItemClickListener(new ListView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView parent,
@@ -156,7 +156,7 @@ public class MainActivity extends ActionBarActivity {
     }
 
     private void slideFragmentContainer(float offset) {
-        int width = DRAWER_WIDTH;
+        int width = getResources().getInteger(R.integer.drawer_divider_height);
         float delta = (width * offset);
 
         if (DEBUG) Log.d(TAG, "slideFragmentContainer: width: " + width + " delta: " + delta);
@@ -170,7 +170,7 @@ public class MainActivity extends ActionBarActivity {
     private void showFirstFragment(Fragment fragment) {
         FragmentManager fm = getFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
-        ft.add(FRAGMENT_CONTAINER_ID, fragment);
+        ft.add(R.id.fragment_container, fragment);
         ft.commit();
     }
 
@@ -178,7 +178,7 @@ public class MainActivity extends ActionBarActivity {
         FragmentManager fm = getFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
         ScheduleFragment sf = new ScheduleFragment();
-        ft.replace(FRAGMENT_CONTAINER_ID, sf);
+        ft.replace(R.id.fragment_container, sf);
         ft.commit();
     }
 
@@ -186,7 +186,7 @@ public class MainActivity extends ActionBarActivity {
         FragmentManager fm = getFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
         HistoryFragment gsf = new HistoryFragment();
-        ft.replace(FRAGMENT_CONTAINER_ID, gsf);
+        ft.replace(R.id.fragment_container, gsf);
         ft.commit();
     }
 
@@ -194,7 +194,7 @@ public class MainActivity extends ActionBarActivity {
         FragmentManager fm = getFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
         RosterFragment rf = new RosterFragment();
-        ft.replace(FRAGMENT_CONTAINER_ID, rf);
+        ft.replace(R.id.fragment_container, rf);
         ft.commit();
     }
 

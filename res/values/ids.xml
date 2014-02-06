@@ -3,4 +3,5 @@
     <item type="id" name="snapshot_home_team" />
     <item type="id" name="snapshot_away_team" />
     <item type="id" name="snapshot_score" />
+    <item type="id" name="fragment_container" />
 </resources>
