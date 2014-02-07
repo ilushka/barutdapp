@@ -21,7 +21,7 @@ import android.view.Gravity;
 import android.graphics.Typeface;
 import android.widget.ImageView;
 
-public class RosterFragment extends FragmentWithSpinner {
+public class RosterFragment extends BaseFragment {
     static private final String TAG = "RosterFragment";
     static private final boolean DEBUG = true; 
 

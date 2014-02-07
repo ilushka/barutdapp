@@ -14,11 +14,11 @@ import android.widget.RelativeLayout;
 import android.content.res.Resources;
 import android.widget.TextView;
 
-public abstract class FragmentWithSpinner extends Fragment {
+public abstract class BaseFragment extends Fragment {
     private ProgressBar mProgressSpinner;
     protected ScrollView mScrollView;
 
-    public FragmentWithSpinner() {
+    public BaseFragment() {
         super();
     }
 

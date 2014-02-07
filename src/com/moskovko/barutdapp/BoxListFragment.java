@@ -14,7 +14,7 @@ import android.widget.RelativeLayout;
 import android.content.res.Resources;
 import android.widget.TextView;
 
-public abstract class BoxListFragment extends FragmentWithSpinner {
+public abstract class BoxListFragment extends BaseFragment {
     public BoxListFragment() {
         super();
     }
