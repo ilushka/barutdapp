@@ -215,7 +215,8 @@ public class MainActivity extends ActionBarActivity {
         menuItems.put(MENU_HISTORY, new Runnable() {
             @Override
             public void run() {
-                showHistoryFragment();
+                BarNotification.scheduleScheduleNotification(MainActivity.this);
+                //showHistoryFragment();
             }
         });
     }
