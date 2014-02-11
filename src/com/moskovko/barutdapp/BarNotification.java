@@ -39,6 +39,8 @@ public class BarNotification {
     public static void scheduleScheduleNotification(Context context) {
         AlarmManager am = (AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
         Intent intent = new Intent(context, NotificationService.class);
+        intent.setExtrasClassLoader(NotificationService.NotificationType.class.getClassLoader());
+        intent.putExtra("notificationType", NotificationService.NotificationType.GAME_UPCOMING);
         PendingIntent pi = PendingIntent.getService(context, 0, intent, 0);
         am.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, (SystemClock.elapsedRealtime()
             + (10 * 1000)), pi);
