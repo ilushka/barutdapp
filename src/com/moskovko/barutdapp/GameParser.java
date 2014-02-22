@@ -11,13 +11,14 @@ import java.util.ArrayList;
 import java.text.SimpleDateFormat;
 import java.util.TimeZone;
 import java.text.ParsePosition;
+import java.io.Serializable;
 
 public class GameParser {
     static private final String TAG = "GamesParser";
 
     private String mXML;
 
-    public static class Game {
+    public static class Game implements Serializable {
         public String homeTeamName;
         public String awayTeamName;
         public Date date;

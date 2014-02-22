@@ -40,6 +40,7 @@ public class ScheduleFragment extends BoxListFragment {
                     if ((mGames == null) || (mGames.length == 0)) {
                         ScheduleFragment.this.showSingleMessage("No schedule available :(");
                     } else {
+                        //NotificationService.scheduleScheduleNotification(getActivity(), mGames[0]);
                         ScheduleFragment.this.populateFragment();
                     }
                 }

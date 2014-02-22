@@ -9,17 +9,24 @@ import android.app.NotificationManager;
 import android.content.Context;
 import android.app.AlarmManager;
 import android.os.SystemClock;
+import java.util.Calendar;
+import java.util.Date;
 
 public class Notification {
+    private static final String TAG = "Notification";
+
     public Notification() {
     }
 
-    public static void showScheduleNotification(Context context) {
+    public static void showScheduleNotification(Context context, GameParser.Game game) {
+        
         NotificationCompat.Builder mBuilder =
             new NotificationCompat.Builder(context)
             .setSmallIcon(R.drawable.icon)
             .setContentTitle("My notification")
-            .setContentText("Hello World!");
+            .setContentText("Hello " + game.homeTeamName);
+
+        getTimeDifference(game.date);
 
         Intent resultIntent = new Intent(context, MainActivity.class);
         TaskStackBuilder stackBuilder = TaskStackBuilder.create(context);
@@ -34,5 +41,13 @@ public class Notification {
             (NotificationManager)context.getSystemService(
                 Context.NOTIFICATION_SERVICE);
         mNotificationManager.notify(666, mBuilder.build());
+    }
+
+    private static String getTimeDifference(Date gameDate) {
+        Calendar gameTime = Calendar.getInstance();
+        gameTime.setTime(gameDate);
+        long delta = System.currentTimeMillis() - gameTime.getTimeInMillis();
+        Log.d(TAG, "MONKEY: getTimeDifference(): " + delta);
+        return "";   
     }
 }
