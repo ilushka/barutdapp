@@ -12,10 +12,11 @@ import android.os.SystemClock;
 import java.util.Calendar;
 import java.util.Date;
 import android.os.Bundle;
+import java.lang.System;
 
 public abstract class BaseNotification {
+    private static final String TAG = "BaseNotification";
     private static int mId = 666;
-
     protected Context mContext = null;
 
     public BaseNotification(Context context) {
@@ -56,13 +57,15 @@ public abstract class BaseNotification {
 
         AlarmManager am = (AlarmManager)mContext
             .getSystemService(Context.ALARM_SERVICE);
-        am.set(AlarmManager.ELAPSED_REALTIME_WAKEUP,
+        am.set(AlarmManager.RTC_WAKEUP,
             getNotificationTime(date), pi);
     }
 
     private long getNotificationTime(Date date) {
         Calendar c = Calendar.getInstance();
         c.setTime(date);
+        Log.d(TAG, "getNotificationTime(): currentTimeMillis: " + System.currentTimeMillis()
+            + " getTimeInMillis: " + c.getTimeInMillis());
         return c.getTimeInMillis();
     }
 }
