@@ -1,9 +1,22 @@
 package com.moskovko.barutdapp;
 
+import android.app.IntentService;
+import android.app.NotificationManager;
+import com.google.android.gms.gcm.GoogleCloudMessaging;
+import android.support.v4.app.NotificationCompat;
+import android.content.Intent;
+import android.os.Bundle;
+import android.os.SystemClock;
+import android.util.Log;
+import android.app.PendingIntent;
+import android.content.Context;
+import android.support.v4.content.WakefulBroadcastReceiver;
 
 /** http://developer.android.com/google/gcm/client.html#sample-receive */
 
 public class GcmService extends IntentService {
+    private static final String TAG = "GcmService";
+
     public static final int NOTIFICATION_ID = 1;
     private NotificationManager mNotificationManager;
     NotificationCompat.Builder builder;
@@ -53,7 +66,7 @@ public class GcmService extends IntentService {
             }
         }
         // Release the wake lock provided by the WakefulBroadcastReceiver.
-        GcmBroadcastReceiver.completeWakefulIntent(intent);
+        WakefulBroadcastReceiver.completeWakefulIntent(intent);
     }
 
     // Put the message into a notification and post it.
@@ -64,11 +77,10 @@ public class GcmService extends IntentService {
                 this.getSystemService(Context.NOTIFICATION_SERVICE);
 
         PendingIntent contentIntent = PendingIntent.getActivity(this, 0,
-                new Intent(this, DemoActivity.class), 0);
+                new Intent(this, MainActivity.class), 0);
 
         NotificationCompat.Builder mBuilder =
                 new NotificationCompat.Builder(this)
-        .setSmallIcon(R.drawable.ic_stat_gcm)
         .setContentTitle("GCM Notification")
         .setStyle(new NotificationCompat.BigTextStyle()
         .bigText(msg))
