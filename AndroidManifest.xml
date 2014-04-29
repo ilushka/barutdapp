@@ -14,7 +14,7 @@
             </intent-filter>
         </receiver>
         <!--service android:name=".NotificationService" /-->
-        <servic android:name=".GcmService" />
+        <service android:name=".GcmService" />
         <activity android:name="MainActivity"
                   android:screenOrientation="portrait"
                   android:label="@string/app_name">

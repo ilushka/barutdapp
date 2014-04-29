@@ -50,6 +50,7 @@ public class GcmService extends IntentService {
             // If it's a regular GCM message, do some work.
             } else if (GoogleCloudMessaging.
                     MESSAGE_TYPE_MESSAGE.equals(messageType)) {
+/*
                 // This loop represents the service doing some work.
                 for (int i=0; i<5; i++) {
                     Log.i(TAG, "Working... " + (i+1)
@@ -60,6 +61,7 @@ public class GcmService extends IntentService {
                     }
                 }
                 Log.i(TAG, "Completed work @ " + SystemClock.elapsedRealtime());
+*/
                 // Post notification of received message.
                 sendNotification("Received: " + extras.toString());
                 Log.i(TAG, "Received: " + extras.toString());
@@ -81,6 +83,7 @@ public class GcmService extends IntentService {
 
         NotificationCompat.Builder mBuilder =
                 new NotificationCompat.Builder(this)
+        .setSmallIcon(R.drawable.icon)
         .setContentTitle("GCM Notification")
         .setStyle(new NotificationCompat.BigTextStyle()
         .bigText(msg))

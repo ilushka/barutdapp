@@ -142,6 +142,8 @@ public class MainActivity extends ActionBarActivity {
         this.mRegistrationID = getRegistrationId(getApplicationContext());
         if (mRegistrationID.isEmpty()) {
             registerInBackground(getApplicationContext());
+        } else {
+            Log.i(TAG, "GCM registration ID: " + this.mRegistrationID);
         }
 
         setContentView(this.mDrawerLayout);
